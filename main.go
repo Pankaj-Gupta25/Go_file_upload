@@ -1,7 +1,10 @@
 package main
 
-func main(){
+import db "github.com/Pankaj-Gupta25/Go_file_upload/db"
 
-	r:=setupRoutes()
+func main() {
+
+	db.Connect()
+	r := setupRoutes()
 	r.Run(":4000")
 }

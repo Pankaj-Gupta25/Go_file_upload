@@ -39,11 +39,23 @@ func Upload(c *gin.Context) {
 	meta.MimeType = file.Header.Get("Content-Type")
 	meta.UploadedAt = time.Now()
 
-	db.FileCollection.InsertOne(context.TODO(),meta)
-	
-	c.JSON(http.StatusOK,gin.H{
-		"message":"uploaded",
-		"url":"/files/"+file.Filename,
+	_,err=db.FileCollection.InsertOne(context.TODO(), meta)
+	if err!=nil{
+		c.JSON(500,gin.H{
+			"error":err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "uploaded",
+		"url":     "/files/" + file.Filename,
 	})
 
+}
+
+func Home(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Welcome to the upload",
+	})
 }
